@@ -7,12 +7,14 @@ type Worker struct {
 	ascending bool
 	source    string
 	timeout   time.Duration
+	result    chan time.Duration
 }
 
 func PingSorter() (w Worker) {
 	w.ascending = false
 	w.source = "www.icann.org/en/accredited-registrars/Accredited-Registrars-202211161048.csv"
 	w.timeout = time.Second
+	w.result = make(chan time.Duration, 1)
 	return
 }
 

@@ -26,7 +26,9 @@ func (w Worker) Output(out chan Work) {
 		if o.ping == 0 {
 			log.Printf("ping %s: timeout\n", o.registrarWebsite)
 		} else {
+			w.result <- o.ping
 			fmt.Printf("ping %s (%s): %v\n", o.registrarWebsite, o.location, o.ping)
 		}
 	}
+	close(w.result)
 }
