@@ -9,12 +9,9 @@ go test -v -race
 --- PASS: ExampleSleepWorker (1.03s)
 === RUN   ExampleSleepWorkers
 --- PASS: ExampleSleepWorkers (0.10s)
-=== RUN   ExamplePrimesNew
---- PASS: ExamplePrimesNew (1.32s)
-=== RUN   ExamplePrimesNewConcurrent
---- PASS: ExamplePrimesNewConcurrent (0.33s)
-=== RUN   ExamplePrimesNewCustomInputChannel
---- PASS: ExamplePrimesNewCustomInputChannel (0.32s)
+=== RUN   ExamplePrimesWorker
+--- PASS: ExamplePrimesWorker (1.34s)
+=== RUN   ExamplePrimesWorkers
+--- PASS: ExamplePrimesWorkers (0.32s)
 PASS
-ok  	github.com/quakephil/generic-worker-pool-examples	3.230s
-```
+ok  	github.com/quakephil/generic-worker-pool-examples	2.922s```

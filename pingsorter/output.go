@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"sort"
+	"time"
 )
 
 func sorter(pings []Work, ascending bool) {
@@ -15,9 +16,9 @@ func sorter(pings []Work, ascending bool) {
 	})
 }
 
-func (w Worker) Output(out chan Work) {
+func (w Worker) Output(processed chan Work) (total time.Duration) {
 	pings := []Work{}
-	for o := range out {
+	for o := range processed {
 		pings = append(pings, o)
 	}
 
@@ -26,9 +27,9 @@ func (w Worker) Output(out chan Work) {
 		if o.ping == 0 {
 			log.Printf("ping %s: timeout\n", o.registrarWebsite)
 		} else {
-			w.result <- o.ping
+			total += o.ping
 			fmt.Printf("ping %s (%s): %v\n", o.registrarWebsite, o.location, o.ping)
 		}
 	}
-	close(w.result)
+	return total
 }

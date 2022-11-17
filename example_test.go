@@ -1,38 +1,47 @@
 package main
 
-import "github.com/quakephil/generic-worker-pool"
+import (
+	"fmt"
+	"github.com/quakephil/generic-worker-pool"
+)
 
-// 10 units of sleep = 1 second.
 // 1 worker takes 1 second
 func ExampleSleepWorker() {
-	pool.New[SleepState](SleepWorker{10}).Wait(1)
-	// Output: done
+	result := pool.New[int, int](SleepWorker{}, sleepTest).Wait(1)
+	fmt.Println("Slept", result, "times")
+	// Output: Slept 10 times
 }
 
 // 10 workers take 1/10th of a second
 func ExampleSleepWorkers() {
-	pool.New[SleepState](SleepWorker{10}).Wait(10)
-	// Output: done
+	result := pool.New[int, int](SleepWorker{}, sleepTest).Wait(10)
+	fmt.Println("Slept", result, "times")
+	// Output: Slept 10 times
 }
 
-func ExamplePrimesNew() {
-	pool.New[PrimesState](PrimesNew(20000000, 100000)).Wait(1)
+func ExamplePrimesWorker() {
+	result := pool.New[PrimesRange, int](PrimesWorker{}, primesTest).Wait(1)
+	fmt.Println("Found", result, "primes")
 	// Output: Found 1270607 primes
 }
 
-func ExamplePrimesNewConcurrent() {
-	pool.New[PrimesState](PrimesNew(20000000, 100000)).Wait(1000)
+func ExamplePrimesWorkers() {
+	result := pool.New[PrimesRange, int](PrimesWorker{}, primesTest).Wait(1000)
+	fmt.Println("Found", result, "primes")
 	// Output: Found 1270607 primes
 }
 
-func ExamplePrimesNewCustomInputChannel() {
-	worker := PrimesNewWithChannel()
-	go func() {
-		for i := 1; i <= 20000000; i += 100000 {
-			worker.In <- PrimesState{i, i + 100000, 0}
-		}
-		close(worker.In)
-	}()
-	pool.New[PrimesState](worker).Wait(1000)
-	// Output: Found 1270607 primes
+// Test inputs
+
+// 10 units of sleep = 1 second.
+func sleepTest(in chan int) {
+	for n := 1; n <= 10; n++ {
+		in <- 100
+	}
+}
+
+func primesTest(in chan PrimesRange) {
+	for i := 1; i <= 20000000; i += 100000 {
+		in <- PrimesRange{i, i + 100000, 0}
+	}
 }

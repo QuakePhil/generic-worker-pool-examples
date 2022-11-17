@@ -7,9 +7,10 @@ import (
 	"strings"
 )
 
+var source = "www.icann.org/en/accredited-registrars/Accredited-Registrars-202211161048.csv"
 var linesToSkip = 1
 
-func getRecords(source string) (records [][]string) {
+func getRecords() (records [][]string) {
 	log.Println("reading", source)
 	f, err := os.Open(source)
 	check(err)
@@ -22,8 +23,8 @@ func getRecords(source string) (records [][]string) {
 	return
 }
 
-func (w Worker) Input(in chan Work) {
-	records := getRecords(w.source)
+func input(in chan Work) {
+	records := getRecords()
 	checkDupes := make(map[string]bool)
 
 	for _, record := range records {

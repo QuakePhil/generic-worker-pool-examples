@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/go-ping/ping v1.1.0
-	github.com/quakephil/generic-worker-pool v0.1.7
+	github.com/quakephil/generic-worker-pool v0.1.8
 )
 
 require (
