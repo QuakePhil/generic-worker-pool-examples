@@ -6,13 +6,11 @@ import "time"
 type Worker struct {
 	ascending bool
 	timeout   time.Duration
-	result    chan time.Duration
 }
 
 func PingSorter() (w Worker) {
 	w.ascending = false
 	w.timeout = time.Second
-	w.result = make(chan time.Duration, 1)
 	return
 }
 
