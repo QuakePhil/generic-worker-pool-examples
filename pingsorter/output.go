@@ -7,7 +7,9 @@ import (
 	"time"
 )
 
-func sorter(pings []Work, ascending bool) {
+var ascending bool = false
+
+func sorter(pings []registrar) {
 	sort.SliceStable(pings, func(i, j int) bool {
 		if ascending {
 			return pings[i].ping < pings[j].ping
@@ -16,19 +18,19 @@ func sorter(pings []Work, ascending bool) {
 	})
 }
 
-func (w Worker) Output(processed chan Work) (total time.Duration) {
-	pings := []Work{}
+func output(processed <-chan registrar) (total time.Duration) {
+	pings := []registrar{} // TODO: use a better data structure to sort with
 	for o := range processed {
 		pings = append(pings, o)
 	}
 
-	sorter(pings, w.ascending)
+	sorter(pings)
 	for _, o := range pings {
 		if o.ping == 0 {
-			log.Printf("ping %s: timeout\n", o.registrarWebsite)
+			log.Printf("ping %s: timeout\n", o.website)
 		} else {
 			total += o.ping
-			fmt.Printf("ping %s (%s): %v\n", o.registrarWebsite, o.location, o.ping)
+			fmt.Printf("ping %s (%s): %v\n", o.website, o.location, o.ping)
 		}
 	}
 	return total

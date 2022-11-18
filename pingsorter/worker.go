@@ -1,31 +1,21 @@
 package main
 
-import "time"
+import (
+	"net/url"
+	"time"
+)
 
-// Worker
-type Worker struct {
-	ascending bool
-	timeout   time.Duration
+type registrar struct {
+	name     string
+	iana     string
+	location string
+	contact  string
+	website  string
+	ping     time.Duration
 }
 
-func PingSorter() (w Worker) {
-	w.ascending = false
-	w.timeout = time.Second
-	return
-}
-
-// Work
-type Work struct {
-	registrar        string
-	iana             string
-	location         string
-	contact          string
-	registrarWebsite string
-	ping             time.Duration
-}
-
-func WorkFromRecord(record []string) Work {
-	return Work{
+func registrarFromRecord(record []string) registrar {
+	return registrar{
 		record[0],
 		record[1],
 		record[2],
@@ -33,6 +23,13 @@ func WorkFromRecord(record []string) Work {
 		record[4],
 		0,
 	}
+}
+
+func worker(i registrar) registrar {
+	host, err := url.Parse(i.website)
+	check(err)
+	i.ping = pingHost(host.Hostname())
+	return i
 }
 
 // helpers

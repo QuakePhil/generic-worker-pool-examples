@@ -23,7 +23,7 @@ func getRecords() (records [][]string) {
 	return
 }
 
-func input(in chan Work) {
+func input(in chan<- registrar) {
 	records := getRecords()
 	checkDupes := make(map[string]bool)
 
@@ -35,7 +35,7 @@ func input(in chan Work) {
 		domainName := strings.ToLower(record[4])
 		if _, exists := checkDupes[domainName]; !exists {
 			checkDupes[domainName] = true
-			in <- WorkFromRecord(record)
+			in <- registrarFromRecord(record)
 		}
 	}
 }

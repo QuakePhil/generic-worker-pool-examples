@@ -6,7 +6,9 @@ import (
 	"time"
 )
 
-func pingHost(host string, timeout time.Duration) time.Duration {
+var timeout time.Duration = time.Second
+
+func pingHost(host string) time.Duration {
 	pinger, err := ping.NewPinger(host)
 	if err != nil {
 		log.Println(err)
