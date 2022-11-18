@@ -14,4 +14,5 @@ go test -v -race
 === RUN   ExamplePrimesWorkers
 --- PASS: ExamplePrimesWorkers (0.32s)
 PASS
-ok  	github.com/quakephil/generic-worker-pool-examples	2.922s```
+ok  	github.com/quakephil/generic-worker-pool-examples	2.922s
+```
