@@ -6,15 +6,13 @@ import (
 	"time"
 )
 
-var timeout time.Duration = time.Second
-
 func pingHost(host string) time.Duration {
 	pinger, err := ping.NewPinger(host)
 	if err != nil {
 		log.Println(err)
 	}
 	pinger.Count = 1
-	pinger.Timeout = timeout
+	pinger.Timeout = config.timeout
 	err = pinger.Run() // Blocks until finished.
 	if err != nil {
 		log.Println(err)
